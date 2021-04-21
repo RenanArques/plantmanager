@@ -6,22 +6,28 @@ import fonts from '../../styles/fonts'
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    width: "100%",
     paddingTop: 50,
     paddingBottom: 56
   },
   wrapper: {
     flex: 1,
+    width: "100%",
     alignItems: 'center',
-    justifyContent: 'space-around',
+    justifyContent: 'center',
     paddingHorizontal: 16
+  },
+  content: {
+    alignItems: 'center',
+    marginBottom: 24,
   },
   title: {
     color: colors.heading,
-    fontSize: 32,
+    fontSize: 24,
     fontFamily: fonts.heading,
-    lineHeight: 38,
+    lineHeight: 32,
     textAlign: 'center',
-    marginTop: 38
+    marginTop: 64
   },
   subtitle: {
     color: colors.heading,
@@ -29,19 +35,11 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 18,
     paddingHorizontal: 20,
+    marginVertical: 16
   },
-  button: {
-    backgroundColor: colors.green,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 16,
-    marginBottom: 10,
-    height: 56,
-    width: 56
-  },
-  buttonIcon: {
-    fontSize: 32,
-    color: colors.white
+  footer: {
+    width: "100%",
+    paddingHorizontal: 56
   }
 })
 

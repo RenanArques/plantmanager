@@ -6,6 +6,8 @@ export default {
   heading: '#52665A',
   body_dark: '#738078',
   body_light: '#AAB2AD',
+  inputTextColor: '#5C6660',
+  placeholderTextColor: '#ADB2AF',
 
   background: '#FFFFFF',
   shape: '#F0F0F0',
