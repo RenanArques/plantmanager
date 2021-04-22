@@ -6,38 +6,38 @@ import {
   Image,
   FlatList
 } from 'react-native'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { useNavigation } from '@react-navigation/native'
+
 import EnvironmentButton from '../../components/EnvironmentButton'
 import LoadIndicator from '../../components/LoadIndicator'
 import PlantCard from '../../components/PlantCard'
 
-import api from '../../services/api'
+import api, { Environment, Plant } from '../../services/api'
 
 import styles from './styles'
-
-interface Environment {
-  key: string
-  title: string
-}
-
-interface Plant {
-  id: number
-  name: string
-  about: string
-  water_tips: string
-  photo: string
-  environments: string[]
-  frequency: {
-    times: number
-    repeat_every: string
-  }
-}
 
 const PlantSelect: React.FC = () => {
   const [selectedEnvironment, setSelectedEnvironment] = useState('all')
   const [environments, setEnvironments] = useState<Environment[]>([])
   const [filteredPlants, setFilteredPlants] = useState<Plant[]>([])
   const [plants, setPlants] = useState<Plant[]>([])
+  const [username, setUsername] = useState('')
   const [loading, setLoading] = useState(true)
+
+  const navigation = useNavigation()
+
+  useEffect(() => {
+    async function fetchUsername() {
+      const username = await AsyncStorage.getItem('@plant_manager:username')
+
+      if (username === null) return navigation.navigate('Welcome')
+
+      setUsername(username)
+    }
+
+    fetchUsername()
+  }, [])
 
   useEffect(() => {
     async function fetchEnvironments() {
@@ -79,7 +79,7 @@ const PlantSelect: React.FC = () => {
         <View style={styles.greetings}>
           <Text style={styles.headerText}>
             Olá, {'\n'}
-            <Text style={styles.bold}>Renan</Text>
+            <Text style={styles.bold}>{username}</Text>
           </Text>
 
           <Image
@@ -100,7 +100,7 @@ const PlantSelect: React.FC = () => {
         ListFooterComponent={() => (<View />)}
         ListFooterComponentStyle={styles.environmentsListFooter}
         style={styles.environmentsList}
-        keyExtractor={item => item.key}
+        keyExtractor={item => String(item.key)}
         renderItem={({ item }) => (
           <EnvironmentButton
             text={item.title}
@@ -115,10 +115,16 @@ const PlantSelect: React.FC = () => {
         numColumns={2}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.plantsList}
-        keyExtractor={item => item.name}
+        keyExtractor={item => String(item.id)}
         renderItem={({ item }) => (
           <View style={{ flex: 1, margin: 8 }}>
-            <PlantCard name={item.name} imageUrl={item.photo} />
+            <PlantCard
+              name={item.name}
+              imageUrl={item.photo}
+              onPress={() => {
+                navigation.navigate('SavePlant', { plant: item })
+              }}
+            />
           </View>
         )}
       />

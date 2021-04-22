@@ -9,6 +9,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard
 } from 'react-native'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useNavigation } from '@react-navigation/native'
 
 import Button from '../../components/Button'
@@ -25,6 +26,10 @@ const UserIdentification: React.FC = () => {
   const [focused, setFocused] = useState(false)
 
   const navigation = useNavigation()
+
+  async function saveUsername() {
+    await AsyncStorage.setItem('@plant_manager:username', name)
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -48,7 +53,7 @@ const UserIdentification: React.FC = () => {
               textContentType="name"
               autoCapitalize="words"
               autoCorrect={false}
-              maxLength={40}
+              maxLength={30}
               value={name}
               onFocus={() => setFocused(true)}
               onBlur={() => setFocused(false)}
@@ -63,7 +68,11 @@ const UserIdentification: React.FC = () => {
               <Button
                 text="Confirmar"
                 enabled={name ? true : false}
-                onPress={() => navigation.navigate('Confirmation')}
+                onPress={() => {
+                  saveUsername()
+
+                  navigation.navigate('Confirmation')
+                }}
               />
             </View>
           </View>

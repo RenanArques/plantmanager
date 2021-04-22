@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native'
+import { Dimensions, StyleSheet } from 'react-native'
 
 import colors from '../../styles/colors'
 import fonts from '../../styles/fonts'
@@ -24,7 +24,8 @@ const styles = StyleSheet.create({
     color: colors.heading,
     fontFamily: fonts.text,
     fontSize: 32,
-    lineHeight: 36
+    lineHeight: 36,
+    maxWidth: Dimensions.get('window').width - ((32 * 2) + 56 + 16)
   },
   bold: {
     fontFamily: fonts.heading

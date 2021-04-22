@@ -15,7 +15,7 @@ export default {
   gray: '#CFCFCF',
 
   blue: '#3D7199',
-  blue_light: '#EBF6FF',
+  blue_light: ['#E6F1FA','#EBF6FF'],
 
   red: '#E83F5B',
 }
