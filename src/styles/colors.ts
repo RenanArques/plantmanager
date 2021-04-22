@@ -10,7 +10,7 @@ export default {
   placeholderTextColor: '#ADB2AF',
 
   background: '#FFFFFF',
-  shape: '#F0F0F0',
+  shape: ['#F5FAF7','#F0F0F0'],
   white: '#FFFFFF',
   gray: '#CFCFCF',
 

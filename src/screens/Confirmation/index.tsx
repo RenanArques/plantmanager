@@ -7,6 +7,7 @@ import {
   KeyboardAvoidingView,
   Platform
 } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
 
 import Button from '../../components/Button'
 
@@ -15,6 +16,8 @@ import Emoji from '../../assets/emojis/Emoji-3.svg'
 import styles from './styles'
 
 const Confirmation: React.FC = () => {
+  const navigation = useNavigation()
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.wrapper}>
@@ -31,7 +34,10 @@ const Confirmation: React.FC = () => {
         </View>
 
         <View style={styles.footer}>
-          <Button text="Começar" />
+          <Button
+            text="Começar"
+            onPress={() => navigation.navigate('PlantSelect')}
+          />
         </View>
       </View>
     </SafeAreaView>
