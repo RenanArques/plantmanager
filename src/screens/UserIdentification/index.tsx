@@ -71,7 +71,13 @@ const UserIdentification: React.FC = () => {
                 onPress={() => {
                   saveUsername()
 
-                  navigation.navigate('Confirmation')
+                  navigation.navigate('Confirmation', {
+                    title: 'Prontinho',
+                    subtitle: 'Agora vamos começar a cuidar das suas plantinhas com muito cuidado.',
+                    buttonText: 'Começar',
+                    icon: 'smile',
+                    nextScreen: 'PlantSelect'
+                  })
                 }}
               />
             </View>

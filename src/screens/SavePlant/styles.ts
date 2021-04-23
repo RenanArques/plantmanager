@@ -19,12 +19,28 @@ const styles = StyleSheet.create({
     width: '100%'
   },
   contentWrapper: {
+    flex: 1,
     paddingTop: 52,
     zIndex: 1
   },
+  goBackButton: {
+    position: 'absolute',
+    padding: 16,
+    paddingRight: 36,
+    paddingBottom: 36,
+    zIndex: 2
+  },
+  plant: {
+    flex: 1,
+  },
   plantInformation: {
+    flex: 1,
     marginHorizontal: 32,
     marginBottom: 16
+  },
+  plantSvg: {
+    flex: 1,
+    padding: 16
   },
   title: {
     color: colors.heading,
@@ -73,11 +89,13 @@ const styles = StyleSheet.create({
   timePicker: {
     marginBottom: 32
   },
+  timePickerAndroidContainer: {
+    padding: 26,
+    marginHorizontal: 30,
+  },
   timePickerAndroid: {
     borderBottomWidth: 1,
     borderBottomColor: colors.gray,
-    marginHorizontal: 56,
-    marginVertical: 26
   },
   timePickerAndroidText: {
     color: colors.inputTextColor,

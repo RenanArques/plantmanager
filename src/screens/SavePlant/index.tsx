@@ -1,22 +1,25 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import {
   View,
   SafeAreaView,
   Text,
-  Dimensions,
   Platform,
-  TouchableOpacity
+  TouchableOpacity,
+  StatusBar,
+  Alert
 } from 'react-native'
 import { SvgUri } from 'react-native-svg'
 import { format } from 'date-fns'
+import { Feather } from '@expo/vector-icons'
 import { LinearGradient } from 'expo-linear-gradient'
+import { useNavigation } from '@react-navigation/native'
+import { SavePlantProps } from '../../routes/@types/SavePlant'
 import DateTimePicker from '@react-native-community/datetimepicker'
-import { RouteProp } from '@react-navigation/native'
-import { StackNavigationProp } from '@react-navigation/stack'
 
 import ShapeGradient from '../../components/ShapeGradient'
+import Button from '../../components/Button'
 
-import { RootStackParamsList } from '../../routes/stack.routes'
+import { savePlant } from '../../libs/storage'
 import { Plant } from '../../services/api'
 
 import WateringIcon from '../../assets/WaterDrop.svg'
@@ -24,55 +27,33 @@ import WateringIcon from '../../assets/WaterDrop.svg'
 import colors from '../../styles/colors'
 
 import styles from './styles'
-import Button from '../../components/Button'
-
-type SavePlantScreenRouteProp = RouteProp<
-  RootStackParamsList,
-  'SavePlant'
->
-
-type SavePlantScreenNavigationProp = StackNavigationProp<
-  RootStackParamsList,
-  'SavePlant'
->
 
 export interface SavePlantParams {
   plant: Plant
 }
 
-interface SavePlantProps extends React.FC {
-  route: SavePlantScreenRouteProp
-  navigation: SavePlantScreenNavigationProp
-}
-
 const SavePlant: React.FC<SavePlantProps> = ({ route }) => {
+  const [notificationPreferredTime, setNotificationPreferredTime] = useState(new Date())
   const [wateringInformationHeight, setWateringInformationHeight] = useState(0)
-  const [plantInformationHeight, setPlantInformationHeight] = useState(0)
-  const [footerHeight, setFooterHeight] = useState(0)
-  const [imageHeight, setImageHeight] = useState(0)
   const [showDatePicker, setShowDatePicker] = useState(Platform.OS === 'ios')
-  const [update, setUpdate] = useState(false)
-  const [time, setTime] = useState(new Date());
 
-  useEffect(() => {
-    if ((plantInformationHeight === 0) && (footerHeight === 0)) {
-      setTimeout(() => { setUpdate(!update) }, 130)
-    } else {
-      setImageHeight(
-        Dimensions.get('window').height - (footerHeight + plantInformationHeight)
-      )
-    }
-  }, [update])
+  const navigation = useNavigation()
 
   const plant = route.params.plant
 
+  async function handleSavePlant() {
+    try {
+      const savedPlant = await savePlant(plant, notificationPreferredTime)
+
+
+    } catch (error) {
+      Alert.alert('Tente novamente', 'Não foi possível salvar a planta.')
+    }
+  }
+
   return (
     <View style={styles.container}>
-      <View onLayout={({ nativeEvent }) => {
-        setPlantInformationHeight(
-          Number(nativeEvent.layout.height)
-        )
-      }}>
+      <View style={styles.plant}>
 
         <View style={[
           styles.plantBackgroundWrapper,
@@ -83,13 +64,17 @@ const SavePlant: React.FC<SavePlantProps> = ({ route }) => {
 
         <SafeAreaView style={styles.contentWrapper}>
 
-          <SvgUri
-            width={Dimensions.get('window').width}
-            height={imageHeight}
-            uri={plant.photo}
-          />
+          <TouchableOpacity
+            style={[styles.goBackButton, { top: StatusBar.currentHeight }]}
+            onPress={() => navigation.goBack()}
+          >
+            <Feather name="chevron-left" size={28} color={colors.heading} />
+          </TouchableOpacity>
 
           <View style={styles.plantInformation}>
+            <View style={styles.plantSvg}>
+              <SvgUri width="100%" height="100%" uri={plant.photo} />
+            </View>
             <Text style={styles.title}>{plant.name}</Text>
             <Text style={styles.subtitle}>{plant.about}</Text>
           </View>
@@ -115,14 +100,7 @@ const SavePlant: React.FC<SavePlantProps> = ({ route }) => {
 
       </View>
 
-      <SafeAreaView
-        style={styles.footer}
-        onLayout={({ nativeEvent }) => {
-          setFooterHeight(
-            Number(nativeEvent.layout.height)
-          )
-        }}
-      >
+      <SafeAreaView style={styles.footer}>
         <Text style={styles.footerText}>
           Escolha o melhor horário para ser lembrado:
         </Text>
@@ -135,30 +113,32 @@ const SavePlant: React.FC<SavePlantProps> = ({ route }) => {
               is24Hour={true}
               display="spinner"
               style={{ height: 130 }}
-              value={time}
-              onChange={(event, time) => {
+              value={notificationPreferredTime}
+              onChange={(_, time) => {
                 if (Platform.OS === 'android') {
                   setShowDatePicker(oldState => !oldState)
                 }
 
-                if (time) setTime(time)
+                if (time) setNotificationPreferredTime(time)
               }}
             />
           }
           {
             Platform.OS === 'android' &&
             <TouchableOpacity
-              style={styles.timePickerAndroid}
+              style={styles.timePickerAndroidContainer}
               onPress={() => setShowDatePicker(true)}
             >
-              <Text style={styles.timePickerAndroidText}>
-                {format(time, 'HH:mm')}
-              </Text>
+              <View style={styles.timePickerAndroid}>
+                <Text style={styles.timePickerAndroidText}>
+                  {format(notificationPreferredTime, 'HH:mm')}
+                </Text>
+              </View>
             </TouchableOpacity>
           }
         </View>
 
-        <Button text="Cadastrar planta" />
+        <Button text="Cadastrar planta" onPress={handleSavePlant} />
       </SafeAreaView>
     </View>
   )

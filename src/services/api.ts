@@ -19,7 +19,7 @@ export interface Plant {
 }
 
 const api = axios.create({
-  baseURL: 'http://192.168.100.84:3333/'
+  baseURL: 'http://192.168.100.80:3333/'
 })
 
 export default api

@@ -3,7 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack'
 
 import Welcome from '../screens/Welcome'
 import UserIdentification from '../screens/UserIdentification'
-import Confirmation from '../screens/Confirmation'
+import Confirmation, { ConfirmationParams } from '../screens/Confirmation'
 import PlantSelect from '../screens/PlantSelect'
 import SavePlant, { SavePlantParams } from '../screens/SavePlant'
 
@@ -12,7 +12,7 @@ import colors from '../styles/colors'
 export type RootStackParamsList = {
   Welcome: undefined
   UserIdentification: undefined
-  Confirmation: undefined
+  Confirmation: ConfirmationParams
   PlantSelect: undefined
   SavePlant: SavePlantParams
 }
