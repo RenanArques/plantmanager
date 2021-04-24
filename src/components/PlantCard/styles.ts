@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native'
+import { Dimensions, StyleSheet } from 'react-native'
 
 import colors from '../../styles/colors'
 import fonts from '../../styles/fonts'
@@ -62,6 +62,16 @@ const styles = StyleSheet.create({
   bold: {
     color: colors.heading,
     fontFamily: fonts.heading,
+  },
+  deleteButton: {
+    backgroundColor: colors.red,
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+    width: Dimensions.get('window').width - 64,
+    marginLeft: -Dimensions.get('window').width + 32 + 80,
+    marginRight: 32,
+    padding: 28,
+    borderRadius: 20
   }
 })
 

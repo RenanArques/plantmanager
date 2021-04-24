@@ -5,6 +5,7 @@ import fonts from '../../styles/fonts'
 
 const styles = StyleSheet.create({
   container: {
+    width: '100%',
     paddingTop: 46,
     paddingBottom: 16
   },
@@ -26,7 +27,6 @@ const styles = StyleSheet.create({
     lineHeight: 32
   },
   plantsList: {
-    padding: 24,
     paddingBottom: 56
   }
 })

@@ -61,13 +61,13 @@ const PlantSelect: React.FC = () => {
         contentContainerStyle={styles.plantsList}
         keyExtractor={item => String(item.id)}
         renderItem={({ item }) => (
-          <View style={{ flex: 1, margin: 8 }}>
+          <View style={{ flex: 1, marginVertical: 8 }}>
             <PlantCard
               name={item.name}
               imageUrl={item.photo}
               nextWatering={item.hour}
-              onPress={() => {
-              }}
+              onPressDeleteButton={() => { }}
+              onPress={() => { }}
             />
           </View>
         )}
