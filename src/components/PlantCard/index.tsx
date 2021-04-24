@@ -16,22 +16,34 @@ interface PlantCardProps extends RectButtonProps {
 const PlantCard: React.FC<PlantCardProps> = ({
   name,
   imageUrl,
+  nextWatering,
   style,
   ...rest
 }) => {
+  const containerStyles = [
+    style,
+    nextWatering
+      ? styles.containerRow
+      : styles.container
+  ]
+
   return (
-    <ShapeGradient
-      style={[style, styles.container]}
-    >
-      <RectButton
-        style={[style, styles.container]}
-        {...rest}
-      >
-        <View style={styles.content}>
-          <SvgUri width={74} height={90} uri={imageUrl} />
-          <Text style={styles.plantName}>
+    <ShapeGradient style={containerStyles}>
+      <RectButton style={containerStyles} {...rest}>
+        <View style={nextWatering ? styles.contentRow : styles.content}>
+          <View style={nextWatering ? styles.plantSvgRow : styles.plantSvg}>
+            <SvgUri width="100%" height="100%" uri={imageUrl} />
+          </View>
+          <Text style={nextWatering ? styles.plantNameRow : styles.plantName}>
             {name}
           </Text>
+          {
+            nextWatering &&
+            <Text style={styles.nextWateringText}>
+              Regar às {'\n'}
+              <Text style={styles.bold}>{nextWatering}</Text>
+            </Text>
+          }
         </View>
       </RectButton>
     </ShapeGradient>

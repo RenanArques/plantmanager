@@ -13,6 +13,21 @@ interface StoragePlant {
   }
 }
 
+export interface ReturnStoragePlant {
+  hour: string
+  nextNotificationDate: Date
+  id: number
+  name: string
+  about: string
+  water_tips: string
+  photo: string
+  environments: string[]
+  frequency: {
+      times: number
+      repeat_every: string
+  }
+}[]
+
 export async function savePlant(
   plant: Plant,  notificationPreferredTime: Date
   ): Promise<SavedPlant> {

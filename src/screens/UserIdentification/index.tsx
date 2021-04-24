@@ -76,7 +76,7 @@ const UserIdentification: React.FC = () => {
                     subtitle: 'Agora vamos começar a cuidar das suas plantinhas com muito cuidado.',
                     buttonText: 'Começar',
                     icon: 'smile',
-                    nextScreen: 'PlantSelect'
+                    nextScreen: 'PlantSelectStack'
                   })
                 }}
               />

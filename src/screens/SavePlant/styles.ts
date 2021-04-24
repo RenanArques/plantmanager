@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native'
+import { Platform, StyleSheet } from 'react-native'
 
 import colors from '../../styles/colors'
 import fonts from '../../styles/fonts'
@@ -23,8 +23,12 @@ const styles = StyleSheet.create({
     paddingTop: 52,
     zIndex: 1
   },
+  goBackButtonContainer: {
+    position: Platform.OS === 'android' ? 'absolute' : 'relative',
+    zIndex: 2
+  },
   goBackButton: {
-    position: 'absolute',
+    position: Platform.OS === 'ios' ? 'absolute' : 'relative',
     padding: 16,
     paddingRight: 36,
     paddingBottom: 36,
@@ -59,19 +63,7 @@ const styles = StyleSheet.create({
     marginVertical: 16
   },
   wateringInformation: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderRadius: 20,
-    marginHorizontal: 32,
-    padding: 16
-  },
-  wateringInformationText: {
-    fontSize: 15,
-    lineHeight: 23,
-    color: colors.blue,
-    fontFamily: fonts.text,
-    marginRight: 76,
-    marginLeft: 24
+    marginHorizontal: 32
   },
   footer: {
     marginHorizontal: 32,

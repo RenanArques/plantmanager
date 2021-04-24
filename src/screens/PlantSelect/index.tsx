@@ -3,15 +3,14 @@ import {
   View,
   SafeAreaView,
   Text,
-  Image,
   FlatList
 } from 'react-native'
-import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useNavigation } from '@react-navigation/native'
 
 import EnvironmentButton from '../../components/EnvironmentButton'
 import LoadIndicator from '../../components/LoadIndicator'
 import PlantCard from '../../components/PlantCard'
+import Greetings from '../../components/Greetings'
 
 import api, { Environment, Plant } from '../../services/api'
 
@@ -22,22 +21,9 @@ const PlantSelect: React.FC = () => {
   const [environments, setEnvironments] = useState<Environment[]>([])
   const [filteredPlants, setFilteredPlants] = useState<Plant[]>([])
   const [plants, setPlants] = useState<Plant[]>([])
-  const [username, setUsername] = useState('')
   const [loading, setLoading] = useState(true)
 
   const navigation = useNavigation()
-
-  useEffect(() => {
-    async function fetchUsername() {
-      const username = await AsyncStorage.getItem('@plant_manager:username')
-
-      if (username === null) return navigation.navigate('Welcome')
-
-      setUsername(username)
-    }
-
-    fetchUsername()
-  }, [])
 
   useEffect(() => {
     async function fetchEnvironments() {
@@ -76,17 +62,8 @@ const PlantSelect: React.FC = () => {
   return (
     <SafeAreaView style={styles.container} >
       <View style={styles.header}>
-        <View style={styles.greetings}>
-          <Text style={styles.headerText}>
-            Olá, {'\n'}
-            <Text style={styles.bold}>{username}</Text>
-          </Text>
+        <Greetings />
 
-          <Image
-            style={styles.profileImage}
-            source={{ uri: 'https://github.com/renanarques.png' }}
-          />
-        </View>
         <Text style={styles.title}>
           <Text style={styles.bold}>Em qual ambiente</Text> {'\n'}
           você quer colocar sua planta?

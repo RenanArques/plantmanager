@@ -5,8 +5,6 @@ import fonts from '../../styles/fonts'
 
 const styles = StyleSheet.create({
   container: {
-    width: '100%',
-    height: '105%',
     paddingTop: 46,
     paddingBottom: 16
   },
@@ -15,24 +13,17 @@ const styles = StyleSheet.create({
     paddingHorizontal: 32,
     paddingVertical: 16
   },
+  wateringInformation: {
+    marginBottom: 40
+  },
   bold: {
     fontFamily: fonts.heading
   },
   title: {
     color: colors.heading,
     fontFamily: fonts.text,
-    fontSize: 17,
-    lineHeight: 23
-  },
-  environmentsList: {
-    minHeight: 56,
-    maxHeight: 56,
-    paddingVertical: 8,
-    paddingLeft: 28
-  },
-  environmentsListFooter: {
-    width: 56,
-    height: 56,
+    fontSize: 24,
+    lineHeight: 32
   },
   plantsList: {
     padding: 24,

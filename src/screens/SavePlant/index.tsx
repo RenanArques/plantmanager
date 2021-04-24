@@ -11,18 +11,16 @@ import {
 import { SvgUri } from 'react-native-svg'
 import { format } from 'date-fns'
 import { Feather } from '@expo/vector-icons'
-import { LinearGradient } from 'expo-linear-gradient'
 import { useNavigation } from '@react-navigation/native'
 import { SavePlantProps } from '../../routes/@types/SavePlant'
 import DateTimePicker from '@react-native-community/datetimepicker'
 
+import WateringInformation from '../../components/WateringInformation'
 import ShapeGradient from '../../components/ShapeGradient'
 import Button from '../../components/Button'
 
 import { savePlant } from '../../libs/storage'
 import { Plant } from '../../services/api'
-
-import WateringIcon from '../../assets/WaterDrop.svg'
 
 import colors from '../../styles/colors'
 
@@ -45,7 +43,13 @@ const SavePlant: React.FC<SavePlantProps> = ({ route }) => {
     try {
       const savedPlant = await savePlant(plant, notificationPreferredTime)
 
-
+      navigation.navigate('Confirmation', {
+        title: 'Tudo certo',
+        subtitle: `Fique tranquilo que sempre vamos lembrar você de cuidar da sua ${savedPlant.name}.`,
+        buttonText: 'Muito Obrigado :D',
+        icon: 'hug',
+        nextScreen: 'MyPlants'
+      })
     } catch (error) {
       Alert.alert('Tente novamente', 'Não foi possível salvar a planta.')
     }
@@ -54,7 +58,6 @@ const SavePlant: React.FC<SavePlantProps> = ({ route }) => {
   return (
     <View style={styles.container}>
       <View style={styles.plant}>
-
         <View style={[
           styles.plantBackgroundWrapper,
           { paddingBottom: wateringInformationHeight / 2 }
@@ -64,12 +67,14 @@ const SavePlant: React.FC<SavePlantProps> = ({ route }) => {
 
         <SafeAreaView style={styles.contentWrapper}>
 
-          <TouchableOpacity
-            style={[styles.goBackButton, { top: StatusBar.currentHeight }]}
-            onPress={() => navigation.goBack()}
-          >
-            <Feather name="chevron-left" size={28} color={colors.heading} />
-          </TouchableOpacity>
+          <SafeAreaView style={styles.goBackButtonContainer}>
+            <TouchableOpacity
+              style={[styles.goBackButton, { top: StatusBar.currentHeight }]}
+              onPress={() => navigation.goBack()}
+            >
+              <Feather name="chevron-left" size={28} color={colors.heading} />
+            </TouchableOpacity>
+          </SafeAreaView>
 
           <View style={styles.plantInformation}>
             <View style={styles.plantSvg}>
@@ -79,25 +84,17 @@ const SavePlant: React.FC<SavePlantProps> = ({ route }) => {
             <Text style={styles.subtitle}>{plant.about}</Text>
           </View>
 
-          <LinearGradient
-            start={{ x: 0.4, y: 0 }}
-            end={{ x: 0.6, y: 1 }}
-            colors={colors.blue_light}
+          <WateringInformation
+            text={plant.water_tips}
             style={styles.wateringInformation}
             onLayout={({ nativeEvent }) => {
               setWateringInformationHeight(
                 Number(nativeEvent.layout.height)
               )
             }}
-          >
-            <WateringIcon />
-            <Text style={styles.wateringInformationText}>
-              {plant.water_tips}
-            </Text>
-          </LinearGradient>
+          />
 
         </SafeAreaView>
-
       </View>
 
       <SafeAreaView style={styles.footer}>
