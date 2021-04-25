@@ -97,7 +97,7 @@ const SavePlant: React.FC<SavePlantProps> = ({ route }) => {
         </SafeAreaView>
       </View>
 
-      <SafeAreaView style={styles.footer}>
+      <View style={styles.footer}>
         <Text style={styles.footerText}>
           Escolha o melhor horário para ser lembrado:
         </Text>
@@ -136,7 +136,7 @@ const SavePlant: React.FC<SavePlantProps> = ({ route }) => {
         </View>
 
         <Button text="Cadastrar planta" onPress={handleSavePlant} />
-      </SafeAreaView>
+      </View>
     </View>
   )
 }

@@ -13,6 +13,7 @@ import PlantCard from '../../components/PlantCard'
 import Greetings from '../../components/Greetings'
 
 import api, { Environment, Plant } from '../../services/api'
+import { allowsNotificationsAsync } from '../../libs/notification'
 
 import styles from './styles'
 
@@ -24,6 +25,8 @@ const PlantSelect: React.FC = () => {
   const [loading, setLoading] = useState(true)
 
   const navigation = useNavigation()
+
+  useEffect(() => { allowsNotificationsAsync() }, [])
 
   useEffect(() => {
     async function fetchEnvironments() {

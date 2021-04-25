@@ -2,9 +2,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { format, isBefore } from 'date-fns'
 
 import { Plant } from '../services/api'
+import { createNotification, removeNotification } from './notification'
 
 export interface SavedPlant extends Plant {
   nextNotificationDate: Date
+  notificationId: string
 }
 
 interface StoragePlant {
@@ -15,6 +17,7 @@ interface StoragePlant {
 
 export interface ReturnStoragePlant {
   hour: string
+  notificationId: string
   nextNotificationDate: Date
   id: number
   name: string
@@ -44,8 +47,14 @@ export async function savePlant(
           notificationPreferredTime.getDate() + 1
         )
       }
+
+      const notificationId = await createNotification(
+        plant,
+        notificationPreferredTime
+      )
       
       const newSavedPlant: SavedPlant = {
+        notificationId,
         nextNotificationDate: notificationPreferredTime,
         ...plant
       }
@@ -104,6 +113,8 @@ export async function removePlant(plant: ReturnStoragePlant) {
      delete plants[plant.id]
 
      await AsyncStorage.setItem('@plant_manager:plants', JSON.stringify(plants))
+
+     removeNotification(plant.notificationId)
 
      return plants
   } catch (error) {
