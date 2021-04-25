@@ -4,6 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack'
 import Confirmation, { ConfirmationParams } from '../screens/Confirmation'
 import SavePlant, { SavePlantParams } from '../screens/SavePlant'
 import UserIdentification from '../screens/UserIdentification'
+import { MyPlantsParams } from '../screens/MyPlants'
 import PlantSelect from '../screens/PlantSelect'
 import Welcome from '../screens/Welcome'
 
@@ -17,7 +18,7 @@ export type RootStackParamsList = {
   PlantSelect: undefined
   PlantSelectStack: undefined
   SavePlant: SavePlantParams
-  MyPlants: undefined
+  MyPlants: MyPlantsParams
 }
 
 const StackNavigator = createStackNavigator<RootStackParamsList>()
@@ -30,7 +31,6 @@ const StackRoutes: React.FC = () => (
         backgroundColor: colors.white
       }
     }}
-    initialRouteName="Welcome"
   >
 
     <StackNavigator.Screen

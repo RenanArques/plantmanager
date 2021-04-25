@@ -92,3 +92,21 @@ export async function getPlants() {
      throw new Error(error)
    }
 }
+
+export async function removePlant(plant: ReturnStoragePlant) {
+  try {
+     const data = await AsyncStorage.getItem('@plant_manager:plants')
+
+     if (data === null) return new Error
+
+     const plants: StoragePlant = JSON.parse(data)
+
+     delete plants[plant.id]
+
+     await AsyncStorage.setItem('@plant_manager:plants', JSON.stringify(plants))
+
+     return plants
+  } catch (error) {
+    throw new Error(error)
+  }
+}

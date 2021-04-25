@@ -11,6 +11,7 @@ export default {
 
   background: '#FFFFFF',
   shape: ['#F5FAF7','#F0F0F0'],
+  shapeRed: ['#FAF4F4','#F3E4E4'],
   white: '#FFFFFF',
   gray: '#CFCFCF',
 

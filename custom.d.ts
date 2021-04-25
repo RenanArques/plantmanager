@@ -4,8 +4,8 @@ declare module '*.png' {
 }
 
 interface SvgProps {
-  width?: number,
-  height?: number
+  width?: number | string,
+  height?: number | string
 }
 
 declare module '*.svg' {

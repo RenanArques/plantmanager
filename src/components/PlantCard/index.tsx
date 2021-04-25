@@ -27,12 +27,12 @@ const PlantCard: React.FC<PlantCardProps> = ({
   const row = Boolean(nextWatering)
 
   const DeleteButton = () => (
-    <TouchableOpacity
+    <RectButton
       onPress={onPressDeleteButton}
       style={styles.deleteButton}
     >
       <Feather name="trash" color={colors.white} size={26} />
-    </TouchableOpacity>
+    </RectButton>
   )
 
   const containerStyles = [

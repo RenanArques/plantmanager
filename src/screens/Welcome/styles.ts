@@ -23,6 +23,11 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 38
   },
+  heroImage: {
+    flex: 1,
+    width: '100%',
+    margin: 16
+  },
   subtitle: {
     color: colors.heading,
     fontFamily: fonts.text,
@@ -35,7 +40,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 16,
-    marginBottom: 10,
+    marginBottom: 36,
+    marginTop: 24,
     height: 56,
     width: 56
   },

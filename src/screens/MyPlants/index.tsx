@@ -5,31 +5,60 @@ import {
   Text,
   FlatList
 } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
+import { MyPlantsProps } from '../../routes/@types/MyPlants'
 import { formatDistanceToNow } from 'date-fns'
 import { pt } from 'date-fns/locale'
-import { useNavigation } from '@react-navigation/native'
 
+import DeletePlantConfirmationPopup from '../../components/DeletePlantConfirmationPopup'
 import WateringInformation from '../../components/WateringInformation'
 import LoadIndicator from '../../components/LoadIndicator'
 import PlantCard from '../../components/PlantCard'
 import Greetings from '../../components/Greetings'
 
-import { getPlants, ReturnStoragePlant } from '../../libs/storage'
+import { removePlant, getPlants, ReturnStoragePlant } from '../../libs/storage'
 
 import styles from './styles'
 
-const PlantSelect: React.FC = () => {
+export interface MyPlantsParams {
+  setTabBarVisible: (visible: boolean) => void
+}
+
+const MyPlants: React.FC<MyPlantsProps> = ({ route }) => {
   const [myPlants, setMyPlants] = useState<ReturnStoragePlant[]>()
+  const [plantToDelete, setPlantToDelete] = useState<ReturnStoragePlant>()
 
   const navigation = useNavigation()
 
-  useEffect(() => {
-    async function fetchMyPlants() {
-      const data = await getPlants()
+  const { setTabBarVisible } = route.params
 
-      setMyPlants(data)
+  navigation.addListener('focus', () => fetchMyPlants())
+
+  async function fetchMyPlants() {
+    const data = await getPlants()
+
+    if (data[0] == undefined) {
+      return navigation.navigate('PlantSelectStack')
     }
 
+    setMyPlants(data)
+  }
+
+  async function handleDeletePlant(plantToDelete: ReturnStoragePlant) {
+    await removePlant(plantToDelete)
+
+    fetchMyPlants()
+
+    setPlantToDelete(undefined)
+  }
+
+  useEffect(() => {
+    if (plantToDelete) return setTabBarVisible(false)
+
+    setTabBarVisible(true)
+  }, [plantToDelete])
+
+  useEffect(() => {
     fetchMyPlants()
   }, [])
 
@@ -41,40 +70,53 @@ const PlantSelect: React.FC = () => {
   )
 
   return (
-    <SafeAreaView style={styles.container} >
-      <View style={styles.header}>
-        <Greetings />
+    <>
+      <SafeAreaView style={styles.container} >
+        <View style={styles.header}>
+          <Greetings />
 
-        <WateringInformation
-          text={`Regue sua ${myPlants[0].name} daqui à ${nextTime}`}
-          style={styles.wateringInformation}
+          <WateringInformation
+            text={`Regue sua ${myPlants[0].name} daqui à ${nextTime}`}
+            style={styles.wateringInformation}
+          />
+
+          <Text style={styles.title}>
+            <Text style={styles.bold}>Próximas regadas</Text>
+          </Text>
+        </View>
+
+        <FlatList
+          data={myPlants}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.plantsList}
+          keyExtractor={item => String(item.id)}
+          renderItem={({ item }) => (
+            <View style={{ flex: 1, marginVertical: 8 }}>
+              <PlantCard
+                name={item.name}
+                imageUrl={item.photo}
+                nextWatering={item.hour}
+                onPressDeleteButton={() => {
+                  setPlantToDelete(item)
+                }}
+                onPress={() => { }}
+              />
+            </View>
+          )}
         />
 
-        <Text style={styles.title}>
-          <Text style={styles.bold}>Próximas regadas</Text>
-        </Text>
-      </View>
+      </SafeAreaView>
 
-      <FlatList
-        data={myPlants}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.plantsList}
-        keyExtractor={item => String(item.id)}
-        renderItem={({ item }) => (
-          <View style={{ flex: 1, marginVertical: 8 }}>
-            <PlantCard
-              name={item.name}
-              imageUrl={item.photo}
-              nextWatering={item.hour}
-              onPressDeleteButton={() => { }}
-              onPress={() => { }}
-            />
-          </View>
-        )}
-      />
-
-    </SafeAreaView>
+      {
+        plantToDelete &&
+        <DeletePlantConfirmationPopup
+          plant={plantToDelete}
+          onCancel={() => setPlantToDelete(undefined)}
+          onConfirm={() => handleDeletePlant(plantToDelete)}
+        />
+      }
+    </>
   )
 }
 
-export default PlantSelect
+export default MyPlants

@@ -20,7 +20,9 @@ const Welcome: React.FC = () => {
           forma fácil
         </Text>
 
-        <Watering width={Dimensions.get('window').width - 42 * 2} />
+        <View style={styles.heroImage}>
+          <Watering width="100%" height="100%" />
+        </View>
 
         <Text style={styles.subtitle}>
           Não esqueça mais de regar suas plantas.

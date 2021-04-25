@@ -6,6 +6,7 @@ import fonts from '../../styles/fonts'
 const styles = StyleSheet.create({
   container: {
     width: '100%',
+    height: '100%',
     paddingTop: 46,
     paddingBottom: 16
   },
